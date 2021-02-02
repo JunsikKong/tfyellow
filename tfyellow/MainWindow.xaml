@@ -1,0 +1,36 @@
+﻿<Window x:Class="tfyellow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:tfyellow"
+        mc:Ignorable="d"
+        Title="TF Y get" Height="400" Width="600">
+    <Grid>
+        <Label Content="숫자를 입력하세요." HorizontalAlignment="Left" Margin="44,25,0,0" VerticalAlignment="Top" Width="121"/>
+        <TextBox x:Name="txtNumber" HorizontalAlignment="Left" Height="23" Margin="170,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"/>
+        <Button x:Name="btnStart" Content="실행" HorizontalAlignment="Left" Margin="235,29,0,0" VerticalAlignment="Top" Width="44" Height="23" Click="btnStart_Click"/>
+        <Button x:Name="brnCancel" Content="중단" HorizontalAlignment="Left" Margin="284,29,0,0" VerticalAlignment="Top" Width="41" Height="23" Click="btnCancel_Click"/>
+        <ListBox x:Name="lstNumber" HorizontalAlignment="Left" Height="174" Margin="57,125,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="합계는 ?" HorizontalAlignment="Left" Margin="194,125,0,0" VerticalAlignment="Top" Width="108"/>
+        <TextBlock x:Name="tblkSum" HorizontalAlignment="Left" Margin="202,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="20" Foreground="#FFFAF8F8">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFB1A5A5" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+            <TextBlock.OpacityMask>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.OpacityMask>
+        </TextBlock>
+        <Label Name="lblState" Content="현재상태 Default" HorizontalAlignment="Left" Margin="50,320,0,0" VerticalAlignment="Top"/>
+        <Button Name="btn1" Content="Button" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click"/>
+        <Button Name="btn2" Content="Button" HorizontalAlignment="Left" Margin="368,49,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
+        <Button Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,69,0,0" VerticalAlignment="Top" Width="75"/>
+        <Image Name="imgPrint"  HorizontalAlignment="Left" Height="218" VerticalAlignment="Top" Width="199" Margin="368,107,0,0"/>
+    </Grid>
+</Window>
