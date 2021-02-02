@@ -87,8 +87,8 @@ namespace tfyellow
                     Thread.Sleep(20);
                     if (i % 2 == 0)
                     {
-                        sum += i;
-                        e.Result = sum;
+                        //sum += i;
+                        //e.Result = sum;
                     }
 
                 }

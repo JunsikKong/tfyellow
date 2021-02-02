@@ -28,8 +28,8 @@
             </TextBlock.OpacityMask>
         </TextBlock>
         <Label Name="lblState" Content="현재상태 Default" HorizontalAlignment="Left" Margin="50,320,0,0" VerticalAlignment="Top"/>
-        <Button Name="btn1" Content="Button" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click"/>
-        <Button Name="btn2" Content="Button" HorizontalAlignment="Left" Margin="368,49,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
+        <Button Name="btn1" Content="시작" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click"/>
+        <Button Name="btn2" Content="정지" HorizontalAlignment="Left" Margin="368,49,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
         <Button Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,69,0,0" VerticalAlignment="Top" Width="75"/>
         <Image Name="imgPrint"  HorizontalAlignment="Left" Height="218" VerticalAlignment="Top" Width="199" Margin="368,107,0,0"/>
     </Grid>
