@@ -62,3 +62,14 @@ D:\Project\2021\210201\tfyellow\tfyellow\obj\Debug\tfyellow.Properties.Resources
 D:\Project\2021\210201\tfyellow\tfyellow\obj\Debug\tfyellow.csproj.GenerateResource.cache
 D:\Project\2021\210201\tfyellow\tfyellow\obj\Debug\tfyellow.csproj.CoreCompileInputs.cache
 D:\Project\2021\210201\tfyellow\tfyellow\obj\Debug\tfyellow.csproj.CopyComplete
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\ControlzEx.dll
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\MahApps.Metro.dll
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\Microsoft.Xaml.Behaviors.dll
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\ControlzEx.pdb
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\ControlzEx.xml
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\MahApps.Metro.pdb
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\MahApps.Metro.xml
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\Microsoft.Xaml.Behaviors.xml
+D:\Project\2021\210201\tfyellow\tfyellow\bin\Debug\de\MahApps.Metro.resources.dll
+D:\Project\2021\210201\tfyellow\tfyellow\obj\Debug\App.baml

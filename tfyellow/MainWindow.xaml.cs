@@ -19,22 +19,43 @@ using OpenCvSharp;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
+using MahApps.Metro.Controls;
+using System.Runtime.InteropServices;
+
 
 namespace tfyellow
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MainWindow : System.Windows.Window
+    public partial class MainWindow
     {
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [System.Runtime.InteropServices.DllImport("User32", EntryPoint = "FindWindow")]
-        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         internal static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
 
-        String AppName = "League of Legends (TM) Client";
+        [DllImport("user32.dll")]
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowRect(int hwnd, ref RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern UInt16 GetAsyncKeyState(Int32 vKey);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            internal int left;
+            internal int top;
+            internal int right;
+            internal int bottom;
+        }
+
+
+        String AppName = "박근한";
 
 
         //백그라운드 워커 선언
@@ -74,25 +95,22 @@ namespace tfyellow
         //직접 실행시키면 "InvalidOperationException" 오류발생
         private void myThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            int count = (int)e.Argument;
-            for (int i = 1; i <= count; i++)
+            //int count = (int)e.Argument;
+            int i = 0;
+            string str;
+            
+            while (!myThread.CancellationPending)
             {
-                if (myThread.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    Thread.Sleep(20);
-                    if (i % 2 == 0)
-                    {
-                        //sum += i;
-                        //e.Result = sum;
-                    }
-
-                }
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                            (ThreadStart)delegate ()
+                                            {
+                                                str = i++ + " " + myThread.CancellationPending.ToString();
+                                                lblState.Content = str;
+                                            });
+                Thread.Sleep(10);
             }
+            
+            e.Cancel = true;
         }
 
         //작업완료
@@ -154,7 +172,7 @@ namespace tfyellow
             if (findwindow != IntPtr.Zero)
             {
                 //플레이어를 찾았을 경우
-                lblState.Content = "앱플레이어 찾았습니다.";
+                lblState.Content = "찾았습니다.";
 
                 //찾은 플레이어를 바탕으로 Graphics 정보를 가져옵니다.
                 Graphics Graphicsdata = Graphics.FromHwnd(findwindow);
@@ -192,6 +210,24 @@ namespace tfyellow
             {
                 //플레이어를 못찾을경우
                 lblState.Content = "못찾았어요";
+            }
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                if (toggleSwitch.IsOn == true)
+                {
+                    progress.IsActive = true;
+                    progress.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    progress.IsActive = false;
+                    progress.Visibility = Visibility.Collapsed;
+                }
             }
         }
     }
