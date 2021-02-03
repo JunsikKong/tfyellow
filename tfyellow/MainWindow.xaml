@@ -1,12 +1,17 @@
-﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:tfyellow"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Class="tfyellow.MainWindow"
-        mc:Ignorable="d"
-        Title="TF Y get" Height="400" Width="600">
+﻿<mah:MetroWindow x:Class="tfyellow.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 Title="MainWindow"
+                 Width="800"
+                 Height="450"
+                 
+                 BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                 
+                 WindowStartupLocation="CenterScreen"
+                 mc:Ignorable="d">
     <Grid>
         <Label Content="숫자를 입력하세요." HorizontalAlignment="Left" Margin="44,25,0,0" VerticalAlignment="Top" Width="121"/>
         <TextBox Name="txtNumber" HorizontalAlignment="Left" Height="23" Margin="170,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"/>
@@ -38,5 +43,9 @@
                     OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled"/>
         <mah:ProgressRing x:Name="progress" />
         <Label Name="lblPos" Content="T T" HorizontalAlignment="Left" Margin="472,25,0,0" VerticalAlignment="Top"/>
+        <mah:Badged Badge="500" Margin="642,29,24,346">
+            <!-- Control to wrap goes here -->
+            <Button Content="Notifications" />
+        </mah:Badged>
     </Grid>
-</Window>
+</mah:MetroWindow>
