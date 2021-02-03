@@ -34,13 +34,13 @@ namespace tfyellow
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll")]
-        internal static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
+        public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
 
         [DllImport("user32.dll")]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("user32.dll")]
-        public static extern int GetWindowRect(int hwnd, ref RECT lpRect);
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("user32.dll")]
         public static extern UInt16 GetAsyncKeyState(Int32 vKey);
@@ -98,13 +98,71 @@ namespace tfyellow
             //int count = (int)e.Argument;
             int i = 0;
             string str;
+            bool b = false;
+            int count = 0;
+
             
+            RECT cRect;
+            RECT wRect;
+
+
             while (!myThread.CancellationPending)
             {
+                if(GetAsyncKeyState(121) > 1 && b == false)
+                {
+                    string strpos = "";
+                    count++;
+
+                    IntPtr hWnd = FindWindow(null, AppName);
+                    if (hWnd != IntPtr.Zero)
+                    {
+                        GetClientRect(hWnd, out cRect);
+                        GetWindowRect(hWnd, out wRect);
+
+                        strpos += "cRect.left : " + cRect.left + "\n";
+                        strpos += "cRect.right : " + cRect.right + "\n";
+                        strpos += "cRect.top : " + cRect.top + "\n";
+                        strpos += "cRect.bottom : " + cRect.bottom + "\n\n";
+
+                        strpos += "wRect.left : " + wRect.left + "\n";
+                        strpos += "wRect.right : " + wRect.right + "\n";
+                        strpos += "wRect.top : " + wRect.top + "\n";
+                        strpos += "wRect.bottom : " + wRect.bottom;
+
+                        //플레이어를 찾았을 경우
+                        this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                                    (ThreadStart)delegate ()
+                                                    {
+
+                                                        lblPos.Content = strpos;
+                                                    });
+
+                        
+                    }
+                    else
+                    {
+                        //플레이어를 못찾을경우
+                        this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                                    (ThreadStart)delegate ()
+                                                    {
+
+                                                        lblState.Content = "못찾았어요";
+                                                    });
+                    }
+
+                    b = false;
+                }
+
+                if (GetAsyncKeyState(121) <= 1 && b == true)
+                {
+                    b = false;
+                }
+                
+                str = i++ + "\n정지신호 : " + myThread.CancellationPending.ToString() + "\nF9 상태 : " + GetAsyncKeyState(121).ToString() + "\ncount : " + count.ToString();
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                             (ThreadStart)delegate ()
                                             {
-                                                str = i++ + " " + myThread.CancellationPending.ToString();
+                                                
                                                 lblState.Content = str;
                                             });
                 Thread.Sleep(10);

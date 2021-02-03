@@ -9,12 +9,12 @@
         Title="TF Y get" Height="400" Width="600">
     <Grid>
         <Label Content="숫자를 입력하세요." HorizontalAlignment="Left" Margin="44,25,0,0" VerticalAlignment="Top" Width="121"/>
-        <TextBox x:Name="txtNumber" HorizontalAlignment="Left" Height="23" Margin="170,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"/>
-        <Button x:Name="btnStart" Content="실행" HorizontalAlignment="Left" Margin="235,29,0,0" VerticalAlignment="Top" Width="44" Height="23" Click="btnStart_Click"/>
-        <Button x:Name="brnCancel" Content="중단" HorizontalAlignment="Left" Margin="284,29,0,0" VerticalAlignment="Top" Width="41" Height="23" Click="btnCancel_Click"/>
-        <ListBox x:Name="lstNumber" HorizontalAlignment="Left" Height="238" Margin="44,61,0,0" VerticalAlignment="Top" Width="121"/>
+        <TextBox Name="txtNumber" HorizontalAlignment="Left" Height="23" Margin="170,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"/>
+        <Button Name="btnStart" Content="실행" HorizontalAlignment="Left" Margin="235,29,0,0" VerticalAlignment="Top" Width="44" Height="23" Click="btnStart_Click"/>
+        <Button Name="brnCancel" Content="중단" HorizontalAlignment="Left" Margin="284,29,0,0" VerticalAlignment="Top" Width="41" Height="23" Click="btnCancel_Click"/>
+        <ListBox Name="lstNumber" HorizontalAlignment="Left" Height="238" Margin="44,61,0,0" VerticalAlignment="Top" Width="121"/>
         <Label Content="합계는 ?" HorizontalAlignment="Left" Margin="194,125,0,0" VerticalAlignment="Top" Width="108"/>
-        <TextBlock x:Name="tblkSum" HorizontalAlignment="Left" Margin="202,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="20" Foreground="#FFFAF8F8">
+        <TextBlock Name="tblkSum" HorizontalAlignment="Left" Margin="202,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="20" Foreground="#FFFAF8F8">
             <TextBlock.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -28,14 +28,15 @@
                 </LinearGradientBrush>
             </TextBlock.OpacityMask>
         </TextBlock>
-        <Label x:Name="lblState" Content="현재상태 Default" HorizontalAlignment="Left" Margin="44,304,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btn1" Content="시작" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click" Style="{DynamicResource MahApps.Styles.Button.Square}"/>
-        <Button x:Name="btn2" Content="정지" HorizontalAlignment="Left" Margin="368,61,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
-        <Button x:Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,93,0,0" VerticalAlignment="Top" Width="75" Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
-        <Image x:Name="imgPrint"  HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="179" Margin="368,125,0,0"/>
+        <Label Name="lblState" Content="현재상태 Default" HorizontalAlignment="Left" Margin="44,304,0,0" VerticalAlignment="Top"/>
+        <Button Name="btn1" Content="시작" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click" Style="{DynamicResource MahApps.Styles.Button.Square}"/>
+        <Button Name="btn2" Content="정지" HorizontalAlignment="Left" Margin="368,61,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
+        <Button Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,93,0,0" VerticalAlignment="Top" Width="75" Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
+        <Image Name="imgPrint"  HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="179" Margin="368,125,0,0"/>
         <mah:ToggleSwitch Header="ToggleSwitch" HorizontalAlignment="Left" Height="125" VerticalAlignment="Top" Width="100" Margin="482,234,0,0"/>
         <mah:ToggleSwitch OffContent="Do work"
                     OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled"/>
         <mah:ProgressRing x:Name="progress" />
+        <Label Name="lblPos" Content="T T" HorizontalAlignment="Left" Margin="472,25,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
