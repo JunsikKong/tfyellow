@@ -55,7 +55,7 @@ namespace tfyellow
         }
 
 
-        String AppName = "박근한";
+        const string AppName = "박근한";
 
 
         //백그라운드 워커 선언
@@ -65,6 +65,7 @@ namespace tfyellow
         {
             InitializeComponent();
         }
+
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -101,10 +102,8 @@ namespace tfyellow
             bool b = false;
             int count = 0;
 
-            
-            RECT cRect;
-            RECT wRect;
 
+            RECT cRect, wRect;
 
             while (!myThread.CancellationPending)
             {
@@ -178,7 +177,7 @@ namespace tfyellow
             else if (e.Error != null) lblState.Content = "오류 발생";
             else
             {
-                tblkSum.Text = ((int)e.Result).ToString();
+                //tblkSum.Text = ((int)e.Result).ToString();
                 lblState.Content = "작업 완료";
             }
         }
@@ -198,8 +197,6 @@ namespace tfyellow
                 lblState.Content = "이미 실행중";
                 return;
             }
-
-            lstNumber.Items.Clear();
 
             myThread.RunWorkerAsync(num);
         }
@@ -286,6 +283,20 @@ namespace tfyellow
                     progress.IsActive = false;
                     progress.Visibility = Visibility.Collapsed;
                 }
+            }
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (tgl.IsOn == true)
+            {
+                progress.IsActive = true;
+                progress.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                progress.IsActive = false;
+                progress.Visibility = Visibility.Collapsed;
             }
         }
     }

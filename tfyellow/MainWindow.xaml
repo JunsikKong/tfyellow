@@ -4,48 +4,44 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 Title="MainWindow"
+                 
+                 TitleCharacterCasing="Normal"
+                 Title="JSK LOL bot"
                  Width="800"
                  Height="450"
                  
                  BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  
                  WindowStartupLocation="CenterScreen"
-                 mc:Ignorable="d">
+                 mc:Ignorable="d"
+                 
+                 ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded"
+                 >
     <Grid>
-        <Label Content="숫자를 입력하세요." HorizontalAlignment="Left" Margin="44,25,0,0" VerticalAlignment="Top" Width="121"/>
-        <TextBox Name="txtNumber" HorizontalAlignment="Left" Height="23" Margin="170,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"/>
-        <Button Name="btnStart" Content="실행" HorizontalAlignment="Left" Margin="235,29,0,0" VerticalAlignment="Top" Width="44" Height="23" Click="btnStart_Click"/>
-        <Button Name="brnCancel" Content="중단" HorizontalAlignment="Left" Margin="284,29,0,0" VerticalAlignment="Top" Width="41" Height="23" Click="btnCancel_Click"/>
-        <ListBox Name="lstNumber" HorizontalAlignment="Left" Height="238" Margin="44,61,0,0" VerticalAlignment="Top" Width="121"/>
-        <Label Content="합계는 ?" HorizontalAlignment="Left" Margin="194,125,0,0" VerticalAlignment="Top" Width="108"/>
-        <TextBlock Name="tblkSum" HorizontalAlignment="Left" Margin="202,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="20" Foreground="#FFFAF8F8">
-            <TextBlock.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FFB1A5A5" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBlock.Background>
-            <TextBlock.OpacityMask>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBlock.OpacityMask>
-        </TextBlock>
-        <Label Name="lblState" Content="현재상태 Default" HorizontalAlignment="Left" Margin="44,304,0,0" VerticalAlignment="Top"/>
+        <StackPanel>
+            <WrapPanel Margin="5,5">
+                <Label Content="숫자를 입력하세요." Margin="5,0"/>
+                <TextBox Name="txtNumber" Width="60" Margin="5,0"/>
+            </WrapPanel>
+            <WrapPanel Margin="5,5">
+                <Button Name="btnStart" Content="실행" Click="btnStart_Click" Margin="5,0"/>
+                <Button Name="brnCancel" Content="중단" Click="btnCancel_Click" Margin="5,0"/>
+            </WrapPanel>
+            <WrapPanel Margin="5,5">
+                <Label Name="lblState" Content="현재상태 Default" Margin="5,0"/>
+                <Label Name="lblPos" Content="T T" Margin="5,0"/>
+            </WrapPanel>
+        </StackPanel>
+
+        
         <Button Name="btn1" Content="시작" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click" Style="{DynamicResource MahApps.Styles.Button.Square}"/>
         <Button Name="btn2" Content="정지" HorizontalAlignment="Left" Margin="368,61,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
         <Button Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,93,0,0" VerticalAlignment="Top" Width="75" Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
         <Image Name="imgPrint"  HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="179" Margin="368,125,0,0"/>
         <mah:ToggleSwitch Header="ToggleSwitch" HorizontalAlignment="Left" Height="125" VerticalAlignment="Top" Width="100" Margin="482,234,0,0"/>
         <mah:ToggleSwitch OffContent="Do work"
-                    OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled"/>
+                    OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled" Name="tgl"/>
         <mah:ProgressRing x:Name="progress" />
-        <Label Name="lblPos" Content="T T" HorizontalAlignment="Left" Margin="472,25,0,0" VerticalAlignment="Top"/>
-        <mah:Badged Badge="500" Margin="642,29,24,346">
-            <!-- Control to wrap goes here -->
-            <Button Content="Notifications" />
-        </mah:Badged>
+        
     </Grid>
 </mah:MetroWindow>
