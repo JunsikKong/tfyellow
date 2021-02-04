@@ -21,7 +21,8 @@ using System.IO;
 using System.Drawing.Imaging;
 using MahApps.Metro.Controls;
 using System.Runtime.InteropServices;
-
+using Rectangle = System.Drawing.Rectangle;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace tfyellow
 {
@@ -55,7 +56,10 @@ namespace tfyellow
         }
 
 
-        const string AppName = "박근한";
+        const string AppName = "League of Legends (TM) Client";//"MapleStory"; //
+        Bitmap srcImg = null;
+
+        
 
 
         //백그라운드 워커 선언
@@ -63,6 +67,8 @@ namespace tfyellow
 
         public MainWindow()
         {
+            srcImg = new Bitmap(@"myBitmap.bmp");
+            
             InitializeComponent();
         }
 
@@ -98,17 +104,17 @@ namespace tfyellow
         {
             //int count = (int)e.Argument;
             int i = 0;
+            int prevKeyState = 0;
             string str;
-            bool b = false;
             int count = 0;
-
 
             RECT cRect, wRect;
 
             while (!myThread.CancellationPending)
             {
-                if(GetAsyncKeyState(121) > 1 && b == false)
+                if (GetAsyncKeyState(121) > 1 && prevKeyState <= 1)
                 {
+                    
                     string strpos = "";
                     count++;
 
@@ -118,6 +124,17 @@ namespace tfyellow
                         GetClientRect(hWnd, out cRect);
                         GetWindowRect(hWnd, out wRect);
 
+                        int appPointX;
+                        int appPointY;
+                        int appSizeWidth;
+                        int appSizeHeight;
+
+                        appPointX = wRect.left + (wRect.right - wRect.left - cRect.right) / 2;
+                        appPointY = wRect.bottom - cRect.bottom - (wRect.right - wRect.left - cRect.right) / 2;
+                        appSizeWidth = cRect.right;
+                        appSizeHeight = cRect.bottom;
+
+
                         strpos += "cRect.left : " + cRect.left + "\n";
                         strpos += "cRect.right : " + cRect.right + "\n";
                         strpos += "cRect.top : " + cRect.top + "\n";
@@ -126,17 +143,22 @@ namespace tfyellow
                         strpos += "wRect.left : " + wRect.left + "\n";
                         strpos += "wRect.right : " + wRect.right + "\n";
                         strpos += "wRect.top : " + wRect.top + "\n";
-                        strpos += "wRect.bottom : " + wRect.bottom;
+                        strpos += "wRect.bottom : " + wRect.bottom + "\n\n";
+
+                        strpos += "appPointX : " + appPointX + "\n";
+                        strpos += "appPointY : " + appPointY + "\n";
+                        strpos += "appSizeWidth : " + appSizeWidth + "\n";
+                        strpos += "appSizeHeight : " + appSizeHeight + "\n";
+
+
 
                         //플레이어를 찾았을 경우
                         this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                                     (ThreadStart)delegate ()
                                                     {
-
                                                         lblPos.Content = strpos;
                                                     });
 
-                        
                     }
                     else
                     {
@@ -148,15 +170,10 @@ namespace tfyellow
                                                         lblState.Content = "못찾았어요";
                                                     });
                     }
-
-                    b = false;
                 }
 
-                if (GetAsyncKeyState(121) <= 1 && b == true)
-                {
-                    b = false;
-                }
-                
+                prevKeyState = GetAsyncKeyState(121);
+
                 str = i++ + "\n정지신호 : " + myThread.CancellationPending.ToString() + "\nF9 상태 : " + GetAsyncKeyState(121).ToString() + "\ncount : " + count.ToString();
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                             (ThreadStart)delegate ()
@@ -286,17 +303,94 @@ namespace tfyellow
             }
         }
 
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        public void searchIMG(Bitmap screen_img, Bitmap find_img)
         {
-            if (tgl.IsOn == true)
+            //스크린 이미지 선언
+            using (Mat ScreenMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(screen_img))
+            //찾을 이미지 선언
+            using (Mat FindMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(find_img))
+            //스크린 이미지에서 FindMat 이미지를 찾아라
+            using (Mat res = ScreenMat.MatchTemplate(FindMat, TemplateMatchModes.CCoeffNormed))
             {
-                progress.IsActive = true;
-                progress.Visibility = Visibility.Visible;
+                string str = "";
+                //찾은 이미지의 유사도를 담을 더블형 최대 최소 값을 선언합니다.
+                double minval, maxval = 0;
+                //찾은 이미지의 위치를 담을 포인트형을 선업합니다.
+                OpenCvSharp.Point minloc, maxloc;
+                //찾은 이미지의 유사도 및 위치 값을 받습니다. 
+                Cv2.MinMaxLoc(res, out minval, out maxval, out minloc, out maxloc);
+                str += "minval : " + minval + "\n";
+                str += "maxval : " + maxval + "\n";
+                str += "minloc.X : " + minloc.X + "\n";
+                str += "minloc.Y : " + minloc.Y + "\n";
+                str += "maxloc.X : " + maxloc.X + "\n";
+                str += "maxloc.Y : " + maxloc.Y + "\n";
+                lblImgsrch.Content = str;
             }
-            else
+        }
+
+        private void btnImgsrch_Click(object sender, RoutedEventArgs e)
+        {
+            IntPtr findwindow = FindWindow(null, AppName);
+            if (findwindow != IntPtr.Zero)
             {
-                progress.IsActive = false;
-                progress.Visibility = Visibility.Collapsed;
+                //플레이어를 찾았을 경우
+                lblState.Content = "찾았습니다.";
+
+                //찾은 플레이어를 바탕으로 Graphics 정보를 가져옵니다.
+                Graphics Graphicsdata = Graphics.FromHwnd(findwindow);
+
+                //찾은 플레이어 창 크기 및 위치를 가져옵니다. 
+                Rectangle rect = Rectangle.Round(Graphicsdata.VisibleClipBounds);
+
+                //플레이어 창 크기 만큼의 비트맵을 선언해줍니다.
+                Bitmap bmp = new Bitmap(rect.Width, rect.Height);
+
+                //비트맵을 바탕으로 그래픽스 함수로 선언해줍니다.
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    //찾은 플레이어의 크기만큼 화면을 캡쳐합니다.
+                    IntPtr hdc = g.GetHdc();
+                    PrintWindow(findwindow, hdc, 0x2);
+                    g.ReleaseHdc(hdc);
+                }
+
+                // pictureBox1 이미지를 표시해줍니다.
+                printImg(bmp, imgPrint);
+                printImg(srcImg, imgSrcPrint);
+
+                searchIMG(bmp, srcImg);
+            }
+        }
+
+        void printImg(Bitmap bmp, System.Windows.Controls.Image img)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bmp.Save(memory, ImageFormat.Bmp);
+                memory.Position = 0; BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+                img.Source = bitmapimage;
+                //bmp.Save("D:\\myBitmap.bmp");
+            }
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            // 화면 크기만큼의 Bitmap 생성
+            using (Bitmap bmp = new Bitmap(500, 200, PixelFormat.Format32bppArgb))
+            {
+                // Bitmap 이미지 변경을 위해 Graphics 객체 생성
+                using (Graphics gr = Graphics.FromImage(bmp))
+                {
+                    // 화면을 그대로 카피해서 Bitmap 메모리에 저장
+                    gr.CopyFromScreen(50, 50, 200, 200, new System.Drawing.Size(500,500));
+                }
+                // Bitmap 데이타를 파일로 저장
+                bmp.Save("5050200200.png", ImageFormat.Png);
             }
         }
     }

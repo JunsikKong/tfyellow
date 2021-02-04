@@ -15,29 +15,47 @@
                  WindowStartupLocation="CenterScreen"
                  mc:Ignorable="d"
                  
-                 ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded"
+                 ResizeMode="CanMinimize"
                  >
     <Grid>
-        <StackPanel>
-            <WrapPanel Margin="5,5">
-                <Label Content="숫자를 입력하세요." Margin="5,0"/>
-                <TextBox Name="txtNumber" Width="60" Margin="5,0"/>
-            </WrapPanel>
-            <WrapPanel Margin="5,5">
-                <Button Name="btnStart" Content="실행" Click="btnStart_Click" Margin="5,0"/>
-                <Button Name="brnCancel" Content="중단" Click="btnCancel_Click" Margin="5,0"/>
-            </WrapPanel>
-            <WrapPanel Margin="5,5">
-                <Label Name="lblState" Content="현재상태 Default" Margin="5,0"/>
-                <Label Name="lblPos" Content="T T" Margin="5,0"/>
-            </WrapPanel>
-        </StackPanel>
+        <WrapPanel>
+            <StackPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Content="숫자를 입력하세요." Margin="5,0"/>
+                    <TextBox Name="txtNumber" Width="60" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Button Name="btnStart" Content="실행" Click="btnStart_Click" Margin="5,0"/>
+                    <Button Name="btnCancel" Content="중단" Click="btnCancel_Click" Margin="5,0"/>
+                    <Button Name="btnImgsrch" Content="탐색" Click="btnImgsrch_Click" Margin="5,0"/>
+                    <Button Name="btnTest" Content="캡쳐" Click="btnTest_Click" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Name="lblState" Content="현재상태 Default" Margin="5,0"/>
+                    <Label Name="lblPos" Content="T T" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Name="lblImgsrch" Content="IMG" Margin="5,0"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel>
+                <WrapPanel>
+                    <Label Content="Screen IMG" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Image Name="imgPrint" Height="200" Width="179" Margin="5,0"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel>
+                <WrapPanel>
+                    <Label Content="Find IMG" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Image Name="imgSrcPrint" Height="200" Width="179" Margin="5,0"/>
+                </WrapPanel>
+            </StackPanel>
+        </WrapPanel>
 
-        
-        <Button Name="btn1" Content="시작" HorizontalAlignment="Left" Margin="368,29,0,0" VerticalAlignment="Top" Width="75" Click="btn1_Click" Style="{DynamicResource MahApps.Styles.Button.Square}"/>
-        <Button Name="btn2" Content="정지" HorizontalAlignment="Left" Margin="368,61,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click"/>
-        <Button Name="btn3" Content="Button" HorizontalAlignment="Left" Margin="368,93,0,0" VerticalAlignment="Top" Width="75" Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
-        <Image Name="imgPrint"  HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="179" Margin="368,125,0,0"/>
         <mah:ToggleSwitch Header="ToggleSwitch" HorizontalAlignment="Left" Height="125" VerticalAlignment="Top" Width="100" Margin="482,234,0,0"/>
         <mah:ToggleSwitch OffContent="Do work"
                     OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled" Name="tgl"/>
