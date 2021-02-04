@@ -8,7 +8,7 @@
                  TitleCharacterCasing="Normal"
                  Title="JSK LOL bot"
                  Width="800"
-                 Height="450"
+                 Height="600"
                  
                  BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  
@@ -36,6 +36,9 @@
                 </WrapPanel>
                 <WrapPanel Margin="5,5">
                     <Label Name="lblImgsrch" Content="IMG" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Name="lblResult" Content="결과 : " Margin="5,0" FontSize="20" FontWeight="bold"/>
                 </WrapPanel>
             </StackPanel>
             <StackPanel>

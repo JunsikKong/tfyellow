@@ -56,7 +56,7 @@ namespace tfyellow
         }
 
 
-        const string AppName = "League of Legends (TM) Client";//"MapleStory"; //
+        const string AppName = "박근한";//"MapleStory"; //
         Bitmap srcImg = null;
 
         
@@ -151,12 +151,42 @@ namespace tfyellow
                         strpos += "appSizeHeight : " + appSizeHeight + "\n";
 
 
-
                         //플레이어를 찾았을 경우
                         this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                                     (ThreadStart)delegate ()
                                                     {
                                                         lblPos.Content = strpos;
+
+                                                        IntPtr findwindow = FindWindow(null, AppName);
+                                                        if (findwindow != IntPtr.Zero)
+                                                        {
+                                                            //플레이어를 찾았을 경우
+                                                            lblState.Content = "찾았습니다.";
+
+                                                            //찾은 플레이어를 바탕으로 Graphics 정보를 가져옵니다.
+                                                            Graphics Graphicsdata = Graphics.FromHwnd(findwindow);
+
+                                                            //찾은 플레이어 창 크기 및 위치를 가져옵니다. 
+                                                            Rectangle rect = Rectangle.Round(Graphicsdata.VisibleClipBounds);
+
+                                                            //플레이어 창 크기 만큼의 비트맵을 선언해줍니다.
+                                                            Bitmap bmp = new Bitmap(rect.Width, rect.Height);
+
+                                                            //비트맵을 바탕으로 그래픽스 함수로 선언해줍니다.
+                                                            using (Graphics g = Graphics.FromImage(bmp))
+                                                            {
+                                                                //찾은 플레이어의 크기만큼 화면을 캡쳐합니다.
+                                                                IntPtr hdc = g.GetHdc();
+                                                                PrintWindow(findwindow, hdc, 0x2);
+                                                                g.ReleaseHdc(hdc);
+                                                            }
+
+                                                            // pictureBox1 이미지를 표시해줍니다.
+                                                            printImg(bmp, imgPrint);
+                                                            printImg(srcImg, imgSrcPrint);
+
+                                                            searchIMG(bmp, srcImg);
+                                                        }
                                                     });
 
                     }
@@ -172,7 +202,7 @@ namespace tfyellow
                     }
                 }
 
-                prevKeyState = GetAsyncKeyState(121);
+                //prevKeyState = GetAsyncKeyState(121);
 
                 str = i++ + "\n정지신호 : " + myThread.CancellationPending.ToString() + "\nF9 상태 : " + GetAsyncKeyState(121).ToString() + "\ncount : " + count.ToString();
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
@@ -181,7 +211,7 @@ namespace tfyellow
                                                 
                                                 lblState.Content = str;
                                             });
-                Thread.Sleep(10);
+                Thread.Sleep(50);
             }
             
             e.Cancel = true;
@@ -326,6 +356,19 @@ namespace tfyellow
                 str += "maxloc.X : " + maxloc.X + "\n";
                 str += "maxloc.Y : " + maxloc.Y + "\n";
                 lblImgsrch.Content = str;
+
+                if(maxval > 0.99)
+                {
+                    lblResult.FontWeight = FontWeights.Bold;
+                    lblResult.Foreground = System.Windows.Media.Brushes.Blue;
+                    lblResult.Content = "이미지 탐색 성공";
+                }
+                else
+                {
+                    lblResult.FontWeight = FontWeights.Bold;
+                    lblResult.Foreground = System.Windows.Media.Brushes.Red;
+                    lblResult.Content = "이미지 탐색 실패";
+                }
             }
         }
 
