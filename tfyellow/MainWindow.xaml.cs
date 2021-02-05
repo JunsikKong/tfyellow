@@ -23,6 +23,8 @@ using MahApps.Metro.Controls;
 using System.Runtime.InteropServices;
 using Rectangle = System.Drawing.Rectangle;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using System.Diagnostics;
+using System.IO.Ports;
 
 namespace tfyellow
 {
@@ -58,8 +60,8 @@ namespace tfyellow
 
         const string AppName = "박근한";//"MapleStory"; //
         Bitmap srcImg = null;
+        SerialPort sp = new SerialPort();
 
-        
 
 
         //백그라운드 워커 선언
@@ -315,24 +317,6 @@ namespace tfyellow
             }
         }
 
-        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
-            if (toggleSwitch != null)
-            {
-                if (toggleSwitch.IsOn == true)
-                {
-                    progress.IsActive = true;
-                    progress.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    progress.IsActive = false;
-                    progress.Visibility = Visibility.Collapsed;
-                }
-            }
-        }
-
         public void searchIMG(Bitmap screen_img, Bitmap find_img)
         {
             //스크린 이미지 선언
@@ -435,6 +419,136 @@ namespace tfyellow
                 // Bitmap 데이타를 파일로 저장
                 bmp.Save("5050200200.png", ImageFormat.Png);
             }
+        }
+
+        private void btnPrintWindow_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < 100; i++)
+            {
+                IntPtr findwindow = FindWindow(null, AppName);
+                if (findwindow != IntPtr.Zero)
+                {
+                    Graphics Graphicsdata = Graphics.FromHwnd(findwindow);
+                    System.Drawing.Rectangle rect = System.Drawing.Rectangle.Round(Graphicsdata.VisibleClipBounds);
+
+                    using (Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb))
+                    {
+                        using (Graphics g = Graphics.FromImage(bmp))
+                        {
+                            IntPtr hdc = g.GetHdc();
+                            PrintWindow(findwindow, hdc, 0x2);
+                            g.ReleaseHdc(hdc);
+                        }
+                        printImg(bmp, imgSpeed);
+                        //bmp.Save("D:\\PrintWindow.png");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("no");
+                }
+            }
+
+            
+            sw.Stop();
+
+            lblSpeed.Content = "PrintWindow\t\t" + sw.ElapsedMilliseconds.ToString();
+        }
+
+        private void btnCopyFromScreen_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            for(int i=0; i<100; i++)
+            {
+                IntPtr hWnd = FindWindow(null, AppName);
+                if (hWnd != IntPtr.Zero)
+                {
+                    RECT cRect, wRect;
+                    int appPointX;
+                    int appPointY;
+                    int appSizeWidth;
+                    int appSizeHeight;
+
+                    GetClientRect(hWnd, out cRect);
+                    GetWindowRect(hWnd, out wRect);
+
+                    appPointX = wRect.left + (wRect.right - wRect.left - cRect.right) / 2;
+                    appPointY = wRect.bottom - cRect.bottom - (wRect.right - wRect.left - cRect.right) / 2;
+                    appSizeWidth = cRect.right;
+                    appSizeHeight = cRect.bottom;
+
+                    using (Bitmap bmp = new Bitmap(appSizeWidth, appSizeHeight, PixelFormat.Format32bppArgb))
+                    {
+                        using (Graphics gr = Graphics.FromImage(bmp))
+                        {
+                            gr.CopyFromScreen(appPointX, appPointY, 0, 0, bmp.Size);
+                        }
+                        printImg(bmp, imgSpeed);
+                        //bmp.Save("D:\\CopyFromScreen.png");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("no");
+                }
+            }
+            
+            sw.Stop();
+
+            lblSpeed.Content = "CopyFromScreen\t\t" + sw.ElapsedMilliseconds.ToString();
+        }
+
+        private void btnSerialGet_Click(object sender, RoutedEventArgs e)
+        {
+            cbxSerial.ItemsSource = SerialPort.GetPortNames();
+        }
+
+        private void btnSerialCon_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!sp.IsOpen)  //시리얼포트가 열려 있지 않으면
+            {
+                sp.PortName = cbxSerial.Text;  //콤보박스의 선택된 COM포트명을 시리얼포트명으로 지정
+                sp.BaudRate = 9600;  //보레이트 변경이 필요하면 숫자 변경하기
+                sp.DataBits = 8;
+                sp.StopBits = StopBits.One;
+                sp.Parity = Parity.None;
+
+                sp.Open();  //시리얼포트 열기
+
+                lblSerialState.Content = cbxSerial.SelectedItem.ToString() + " 포트 연결";
+                cbxSerial.IsEnabled = false;
+                btnSerialCon.IsEnabled = false;
+            }
+            else  //시리얼포트가 열려 있으면
+            {
+                lblSerialState.Content = "포트가 이미 열려 있습니다.";
+            }
+        }
+
+        private void btnSerialSend_Click(object sender, RoutedEventArgs e)
+        {
+            if (sp.IsOpen)
+            {
+                sp.WriteLine(txtSerial.Text);
+                lblSerialSendMessage.Content = cbxSerial.SelectedItem.ToString() + " 포트로 전송 : " + txtSerial.Text;
+            }
+            else
+            {
+                lblSerialSendMessage.Content = "통신포트가 열리지 않았습니다";
+            }
+        }
+
+        private void btnSerialDiscon_Click(object sender, RoutedEventArgs e)
+        {
+            sp.Close();
+            cbxSerial.IsEnabled = true;
+            btnSerialCon.IsEnabled = true;
         }
     }
 }

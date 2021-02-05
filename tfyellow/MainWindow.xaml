@@ -7,7 +7,7 @@
                  
                  TitleCharacterCasing="Normal"
                  Title="JSK LOL bot"
-                 Width="800"
+                 Width="700"
                  Height="600"
                  
                  BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
@@ -57,12 +57,39 @@
                     <Image Name="imgSrcPrint" Height="200" Width="179" Margin="5,0"/>
                 </WrapPanel>
             </StackPanel>
+            <StackPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Content="속도 테스트" Margin="5,0"/>
+                    <Label Name="lblSpeed"  Content="0" Margin="5,0"/>
+                    <Label Content=" ms" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Button Name="btnPrintWindow" Content="PrintWindow" Margin="5,0" Click="btnPrintWindow_Click"/>
+                    <Button Name="btnCopyFromScreen" Content="CopyFromScreen" Margin="5,0" Click="btnCopyFromScreen_Click"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Image Name="imgSpeed" Height="100" Width="200" Margin="5,0"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel>
+                <WrapPanel Margin="5,5">
+                    <Button Name="btnSerialGet" Content="GetSerialPort" Margin="5,0" Click="btnSerialGet_Click"/>
+                    <Label Name="lblSerialState"  Content="Serial" Margin="5,0"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Content="Serial" Margin="5,0"/>
+                    <ComboBox Name="cbxSerial" IsReadOnly="True" Width="100" Margin="5,0"/>
+                    <Button Name="btnSerialCon" Content="SerialConnect" Margin="5,0" Click="btnSerialCon_Click"/>
+                    <Button Name="btnSerialDiscon" Content="SerialDisConnect" Margin="5,0" Click="btnSerialDiscon_Click"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <TextBox Name="txtSerial" Width="170" Margin="5,0"/>
+                    <Button Name="btnSerialSend" Content="SerialSend" Margin="5,0" Click="btnSerialSend_Click"/>
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <Label Name="lblSerialSendMessage"  Content="안내" Margin="5,0"/>
+                </WrapPanel>
+            </StackPanel>
         </WrapPanel>
-
-        <mah:ToggleSwitch Header="ToggleSwitch" HorizontalAlignment="Left" Height="125" VerticalAlignment="Top" Width="100" Margin="482,234,0,0"/>
-        <mah:ToggleSwitch OffContent="Do work"
-                    OnContent="Working" Margin="418,296,0,18" Toggled="ToggleSwitch_Toggled" Name="tgl"/>
-        <mah:ProgressRing x:Name="progress" />
-        
     </Grid>
 </mah:MetroWindow>
