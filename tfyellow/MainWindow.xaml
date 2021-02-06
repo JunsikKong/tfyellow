@@ -7,8 +7,8 @@
                  
                  TitleCharacterCasing="Normal"
                  Title="JSK LOL bot"
-                 Width="700"
-                 Height="600"
+                 Width="800"
+                 Height="800"
                  
                  BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  
@@ -21,8 +21,8 @@
         <WrapPanel>
             <StackPanel>
                 <WrapPanel Margin="5,5">
-                    <Label Content="숫자를 입력하세요." Margin="5,0"/>
-                    <TextBox Name="txtNumber" Width="60" Margin="5,0"/>
+                    <Label Content="AppName" Margin="5,0"/>
+                    <TextBox Name="txtAppName" Width="140" Margin="5,0" TextChanged="txtAppName_TextChanged" />
                 </WrapPanel>
                 <WrapPanel Margin="5,5">
                     <Button Name="btnStart" Content="실행" Click="btnStart_Click" Margin="5,0"/>

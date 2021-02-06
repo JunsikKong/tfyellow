@@ -58,8 +58,9 @@ namespace tfyellow
         }
 
 
-        const string AppName = "박근한";//"MapleStory"; //
+        string AppName = "";//"MapleStory"; //
         Bitmap srcImg = null;
+        Bitmap srcImg2 = null;
         SerialPort sp = new SerialPort();
 
 
@@ -69,8 +70,8 @@ namespace tfyellow
 
         public MainWindow()
         {
-            srcImg = new Bitmap(@"myBitmap.bmp");
-            
+            srcImg = new Bitmap(@"Bitmap.bmp");
+            srcImg2 = new Bitmap(@"Bitmap2.bmp");
             InitializeComponent();
         }
 
@@ -111,25 +112,107 @@ namespace tfyellow
             int count = 0;
 
             RECT cRect, wRect;
+            int appPointX;
+            int appPointY;
+            int appSizeWidth;
+            int appSizeHeight;
+
+            bool b = false;
 
             while (!myThread.CancellationPending)
             {
-                if (GetAsyncKeyState(121) > 1 && prevKeyState <= 1)
+                if (GetAsyncKeyState(69) > 1 && prevKeyState <= 1)
                 {
-                    
-                    string strpos = "";
-                    count++;
+                   //if (b) b = false;
+                    //else b = true;
+                    b = true;
+                }
 
+                if (b)
+                {
                     IntPtr hWnd = FindWindow(null, AppName);
                     if (hWnd != IntPtr.Zero)
                     {
                         GetClientRect(hWnd, out cRect);
                         GetWindowRect(hWnd, out wRect);
 
-                        int appPointX;
-                        int appPointY;
-                        int appSizeWidth;
-                        int appSizeHeight;
+                        appPointX = wRect.left + (wRect.right - wRect.left - cRect.right) / 2;
+                        appPointY = wRect.bottom - cRect.bottom - (wRect.right - wRect.left - cRect.right) / 2;
+                        appSizeWidth = cRect.right;
+                        appSizeHeight = cRect.bottom;
+
+                        using (Bitmap bmp = new Bitmap(55, 55, PixelFormat.Format32bppArgb))
+                        using (Graphics gr = Graphics.FromImage(bmp))
+                        {
+                            gr.CopyFromScreen(appPointX + 825, appPointY + 970, 0, 0, bmp.Size);
+                            //printImg(bmp, imgSpeed);
+
+                            using (Mat ScreenMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmp))
+                            using (Mat FindMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(srcImg))
+                            using (Mat FindMat2 = OpenCvSharp.Extensions.BitmapConverter.ToMat(srcImg2))
+                            using (Mat res = ScreenMat.MatchTemplate(FindMat, TemplateMatchModes.CCoeffNormed))
+                            using (Mat res2 = ScreenMat.MatchTemplate(FindMat2, TemplateMatchModes.CCoeffNormed))
+                            {
+                                double minval, maxval = 0;
+                                double minval2, maxval2 = 0;
+                                OpenCvSharp.Point minloc, maxloc;
+                                OpenCvSharp.Point minloc2, maxloc2;
+                                Cv2.MinMaxLoc(res, out minval, out maxval, out minloc, out maxloc);
+                                Cv2.MinMaxLoc(res2, out minval2, out maxval2, out minloc2, out maxloc2);
+                                if (maxval2 > 0.90)
+                                {
+                                    //찾을때 이벤트
+                                    if (sp.IsOpen)
+                                    {
+                                        sp.Write("KDw");
+                                        Thread.Sleep(10);
+                                        sp.Write("KUw");
+                                    }
+                                }
+
+                                if (maxval > 0.90)
+                                {
+                                    //찾을때 이벤트
+                                    if (sp.IsOpen)
+                                    {
+                                        sp.Write("KDw");
+                                        Thread.Sleep(10);
+                                        sp.Write("KUw");
+
+                                        b = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                                    (ThreadStart)delegate ()
+                                                    {
+                                                        if (b)
+                                                        {
+                                                            lblResult.Content = "실행중";
+                                                            lblResult.Foreground = System.Windows.Media.Brushes.Blue;
+                                                        }
+                                                        else
+                                                        {
+                                                            lblResult.Content = "정지중";
+                                                            lblResult.Foreground = System.Windows.Media.Brushes.Red;
+                                                        }
+                                                    });
+
+
+                if (GetAsyncKeyState(121) > 1 && prevKeyState <= 1 && false)
+                {
+                    string strpos = "";
+                    count++;
+
+                    IntPtr hWnd = FindWindow(null, (string)e.Argument);
+                    if (hWnd != IntPtr.Zero)
+                    {
+                        GetClientRect(hWnd, out cRect);
+                        GetWindowRect(hWnd, out wRect);
 
                         appPointX = wRect.left + (wRect.right - wRect.left - cRect.right) / 2;
                         appPointY = wRect.bottom - cRect.bottom - (wRect.right - wRect.left - cRect.right) / 2;
@@ -204,7 +287,7 @@ namespace tfyellow
                     }
                 }
 
-                //prevKeyState = GetAsyncKeyState(121);
+                prevKeyState = GetAsyncKeyState(69);
 
                 str = i++ + "\n정지신호 : " + myThread.CancellationPending.ToString() + "\nF9 상태 : " + GetAsyncKeyState(121).ToString() + "\ncount : " + count.ToString();
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
@@ -233,11 +316,9 @@ namespace tfyellow
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            int num;
-
-            if (!int.TryParse(txtNumber.Text, out num)) //숫자가 아닐 경우 반환 num
+            if (AppName == "") //숫자가 아닐 경우 반환 num
             {
-                lblState.Content = "숫자를 입력하세요";
+                lblState.Content = "앱 이름 입력해주세요";
                 return;
             }
 
@@ -247,7 +328,7 @@ namespace tfyellow
                 return;
             }
 
-            myThread.RunWorkerAsync(num);
+            myThread.RunWorkerAsync(AppName);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -535,7 +616,7 @@ namespace tfyellow
         {
             if (sp.IsOpen)
             {
-                sp.WriteLine(txtSerial.Text);
+                sp.Write(txtSerial.Text);
                 lblSerialSendMessage.Content = cbxSerial.SelectedItem.ToString() + " 포트로 전송 : " + txtSerial.Text;
             }
             else
@@ -549,6 +630,11 @@ namespace tfyellow
             sp.Close();
             cbxSerial.IsEnabled = true;
             btnSerialCon.IsEnabled = true;
+        }
+
+        private void txtAppName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppName = txtAppName.Text;
         }
     }
 }
