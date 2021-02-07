@@ -7,7 +7,7 @@
                  
                  TitleCharacterCasing="Normal"
                  Title="JSK LOL bot"
-                 Width="800"
+                 Width="850"
                  Height="800"
                  
                  BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
@@ -21,8 +21,12 @@
         <WrapPanel>
             <StackPanel>
                 <WrapPanel Margin="5,5">
-                    <Label Content="AppName" Margin="5,0"/>
+                    <TextBlock Text="AppName" FontSize="12" VerticalAlignment="center" HorizontalAlignment="left" Margin="5,0,40,0"/>
                     <TextBox Name="txtAppName" Width="140" Margin="5,0" TextChanged="txtAppName_TextChanged" />
+                </WrapPanel>
+                <WrapPanel Margin="5,5">
+                    <TextBlock Text="BackgroundWorkerRun" FontSize="12" VerticalAlignment="center" HorizontalAlignment="left" Margin="5,0,40,0"/>
+                    <mah:ToggleSwitch Name="tglRun" OnContent="Run" OffContent="Stop"/>
                 </WrapPanel>
                 <WrapPanel Margin="5,5">
                     <Button Name="btnStart" Content="실행" Click="btnStart_Click" Margin="5,0"/>

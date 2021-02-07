@@ -128,7 +128,7 @@ namespace tfyellow
                     b = true;
                 }
 
-                if (b)
+                if (b && tglRun.IsOn)
                 {
                     IntPtr hWnd = FindWindow(null, AppName);
                     if (hWnd != IntPtr.Zero)
